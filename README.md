@@ -14,7 +14,10 @@ Ementa:
  - Processamento e armazenamento de informações em sistema não lineares.
 
 Bibliografia:
-(a) Kantz, H.; Schreiber, T. (2004). Nonlinear Time Series Analysis. 2nd Edition. Cambridge;
-(b) Strogatz, S. H. (2015). Nonlinear Dynamics and Chaos: With Applications to Physics, Biology, Chemistry, and Engineering.
-2nd Edition. Westview Press. (c) Sayama, H (2015). Introduction to the Modeling and Analysis of Complex Systems. Open Suny
-(d) Estrada, E (2016). The Structure of Complex Networks. Oxford.
+ - (a) Kantz, H.; Schreiber, T. (2004). Nonlinear Time Series Analysis. 2nd Edition. Cambridge;
+ - (b) Strogatz, S. H. (2015). Nonlinear Dynamics and Chaos: With Applications to Physics, Biology, Chemistry, and Engineering. 2nd Edition. Westview Press. 
+ - (c) Sayama, H (2015). Introduction to the Modeling and Analysis of Complex Systems. Open Suny
+ - (d) Estrada, E (2016). The Structure of Complex Networks. Oxford.
+
+Extras:
+ - Article's Folder (./articles)
