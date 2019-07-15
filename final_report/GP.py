@@ -1,3 +1,5 @@
+# %load GP.py
+# https://github.com/notsebastiano/GP_algorithm
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats
@@ -14,7 +16,7 @@ def td_embedding(timeseries,emb,tau):
         [x[i],x[i+tau],x[i+2*tau],...,x[i + (m-1)*tau]]
     '''
     indexes = np.arange(0,emb,1)*tau
-    return np.array([data[indexes +i] for i in range(len(data)-(emb-1)*tau)])
+    return np.array([timeseries[indexes +i] for i in range(len(timeseries)-(emb-1)*tau)])
 
 
 def logarithmic_r(min_n, max_n, factor):
@@ -57,8 +59,8 @@ def grassberg_procaccia(timeseries,emb_dim,time_delay,plot = None):
     '''
     data_std = np.std(timeseries)
     orbit = td_embedding(timeseries, emb_dim, time_delay)
-
-    n = len(orbit)
+    
+    n = orbit.shape[0] # num rows
     r_vals = logarithmic_r(0.1 * data_std, 0.7 * data_std, 1.03)
     distances = np.zeros(shape=(n,n))
     r_matrix_base = np.zeros(shape=(n,n))
@@ -72,19 +74,26 @@ def grassberg_procaccia(timeseries,emb_dim,time_delay,plot = None):
     for r in r_vals:
         r_matrix = r_matrix_base*r
         heavi_matrix = np.heaviside( r_matrix - distances, 0)
-        corr_sum = (2/float(n*(n-1)))*np.sum(heavi_matrix)
+        try:
+            corr_sum = (2/float(n*(n-1)))*np.sum(heavi_matrix)
+        except ZeroDivisionError as ex:
+            corr_sum = 0
         C_r.append(corr_sum)
 
     #strong assumption: the log-log plot is assumed to be a smooth, monotonic function,
     #hence the slope in the scaling region should be the maximum gradient ( in this case
     #is taken as the mean of the last five maximum gradients as they are calculated for every point )
 
-    gradients = np.gradient(np.log2(C_r),np.log2(r_vals))
+    C_r = np.log2(C_r)
+    r_vals_log = np.log2(r_vals)
+    gradients = np.gradient(C_r, r_vals_log)
     gradients.sort()
     D = np.mean(gradients[-5:])
 
     if plot:
-        plt.plot(np.log2(r_vals),np.log2(C_r))
+        plt.plot(r_vals_log,C_r)
+        plt.xlabel('Correlation (log2)')
+        plt.ylabel('r values (log2)')
         plt.show()
     
-    return D
+    return D, r_vals
